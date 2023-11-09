@@ -3,4 +3,7 @@
     <string name="open">open</string>
     <string name="close">close</string>
     <string name="saldo_total">Saldo Total: %1$.2f€</string>
+    <string name="todos">Todos</string>
+    <string name="ingresos">Ingresos</string>
+    <string name="gastos">Gastos</string>
 </resources>

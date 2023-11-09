@@ -19,7 +19,7 @@ android:padding="24dp">
     android:id="@+id/lvSaldos"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:dividerHeight="1dp"
+    android:dividerHeight="5dp"
     android:divider="#CCCCCC" />
 
 </LinearLayout>
