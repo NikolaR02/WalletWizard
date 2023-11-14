@@ -31,16 +31,10 @@ class LvTransacAdapter(
         // Verifica si el elemento no es nulo antes de asignar los datos
         if (transac != null) {
             nombreTextView.text = transac.nombre
-            cantidadTextView.text = "${transac.cantidad}€"
+            cantidadTextView.text = context.getString(R.string.euros, transac.cantidad)
             fechaTextView.text = transac.getFecha()
         }
 
         return convertView
     }
-/*
-    fun actualizarDatos(nuevaLista: List<Transac>) {
-        clear()  // Limpia la lista actual
-        addAll(nuevaLista)  // Agrega la nueva lista
-        notifyDataSetChanged()
-    }*/
 }

@@ -23,7 +23,7 @@ class TransacActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupButtons()
-        mostrar()
+        cambiarTipo(Tipo.TODOS)
     }
 
     private fun setupButtons() {
@@ -31,7 +31,6 @@ class TransacActivity : AppCompatActivity() {
         binding.btnIngres.setOnClickListener { cambiarTipo(Tipo.INGRESOS) }
         binding.btnGastos.setOnClickListener { cambiarTipo(Tipo.GASTOS) }
     }
-
     private fun cambiarTipo(nuevoTipo: Tipo) {
         tipo = nuevoTipo
         mostrar()

@@ -6,4 +6,7 @@
     <string name="todos">Todos</string>
     <string name="ingresos">Ingresos</string>
     <string name="gastos">Gastos</string>
+    <string name="euros">%1$.2f€</string>
+    <string name="inicio">Inicio</string>
+    <string name="transacciones">Transacciones</string>
 </resources>

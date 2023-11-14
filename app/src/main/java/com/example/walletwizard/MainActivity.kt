@@ -1,24 +1,37 @@
 package com.example.walletwizard
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.walletwizard.databinding.InicioBinding
+import com.example.walletwizard.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: InicioBinding
-    private var saldo: Double = 500.98
-    private var activos = arrayOf("BBVA ...3695\n${saldo}€","Caixa ...4534\n${saldo}€","Efectivo\n${saldo}€")
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = InicioBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.tvSaldoTotal.text= getString(R.string.saldo_total, saldo)
-        binding.lvSaldos.adapter = ArrayAdapter(this,R.layout.lv_activos_item,activos)
+        actionBarDrawerToggle =
+            ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
 
+        binding.drawerLayout.addDrawerListener(actionBarDrawerToggle)
+        actionBarDrawerToggle.syncState()
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            val intent = Intent(this, TransacActivity::class.java)
+            startActivity(intent)
+            true
 
+        } else super.onOptionsItemSelected(item)
+    }
 }
