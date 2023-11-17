@@ -1,12 +1,14 @@
 <resources>
     <string name="app_name">WalletWizard</string>
-    <string name="open">open</string>
-    <string name="close">close</string>
+
     <string name="saldo_total">Saldo Total: %1$.2f€</string>
+
     <string name="todos">Todos</string>
     <string name="ingresos">Ingresos</string>
     <string name="gastos">Gastos</string>
     <string name="euros">%1$.2f€</string>
+
     <string name="inicio">Inicio</string>
     <string name="transacciones">Transacciones</string>
+    <string name="abre_men">Abre menú</string>
 </resources>

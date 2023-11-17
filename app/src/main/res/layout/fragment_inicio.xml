@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.inicio.InicioFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="24dp">
+        <TextView
+            android:id="@+id/tvSaldoTotal2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:text="@string/saldo_total"
+            android:gravity="center" />
+        <!-- Campo de texto para mostrar el Saldo Total -->
+        <TextView
+            android:id="@+id/tvSaldoTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:text="@string/saldo_total"
+            android:gravity="center" />
+
+        <!-- Lista de saldos distribuidos en cuentas -->
+        <ListView
+            android:id="@+id/lvSaldos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dividerHeight="5dp"
+            android:divider="#CCCCCC" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

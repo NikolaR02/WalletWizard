@@ -1,8 +1,16 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/menu_option1"
-        android:title="@string/inicio" />
-    <item
-        android:id="@+id/menu_option2"
-        android:title="@string/transacciones" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigarion_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_inicio"
+            android:icon="@drawable/account_balance_24"
+            android:title="@string/inicio" />
+        <item
+            android:id="@+id/menu_transac"
+            android:icon="@drawable/list_24"
+            android:title="@string/transacciones" />
+    </group>
+
 </menu>
