@@ -52,6 +52,7 @@
                 android:clickable="true"
                 android:textColor="#000000"
                 android:focusable="true" />
+
         </LinearLayout>
 
         <ListView

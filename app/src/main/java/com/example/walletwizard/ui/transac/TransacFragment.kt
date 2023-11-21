@@ -9,6 +9,7 @@ import com.example.walletwizard.LvTransacAdapter
 import com.example.walletwizard.R
 import com.example.walletwizard.Transac
 import com.example.walletwizard.databinding.FragmentTransacBinding
+import com.example.walletwizard.db.FinanzasRepository
 
 class TransacFragment : Fragment() {
 
@@ -16,6 +17,8 @@ class TransacFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    // datos temporales hasta finalizar la bd
     private val transacList = listOf(
         Transac("Domingo`s pizza", 10.45, 23, 11),
         Transac("Mercatienda", 36.65, 16, 11),
@@ -23,6 +26,8 @@ class TransacFragment : Fragment() {
     )
     enum class Tipo { TODOS, INGRESOS, GASTOS }
     private var tipo = Tipo.TODOS
+
+    //
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +37,7 @@ class TransacFragment : Fragment() {
         _binding = FragmentTransacBinding.inflate(inflater, container, false)
 
         setupButtons()
+        // por defecto se abre en la pestaña de todos
         cambiarTipo(Tipo.TODOS)
 
         return binding.root
@@ -49,15 +55,15 @@ class TransacFragment : Fragment() {
     }
 
     private fun mostrar() {
+        val rep = FinanzasRepository(requireContext())
         val transacListMostrar = when (tipo) {
-            Tipo.TODOS -> transacList
-            Tipo.INGRESOS -> transacList.subList(2, 3)
-            Tipo.GASTOS -> transacList.subList(0, 2)
+            Tipo.TODOS -> rep.getAllTransacciones()
+            Tipo.INGRESOS -> rep.getAllTransacciones().filter { it.tipo == "Ingreso" }
+            Tipo.GASTOS -> rep.getAllTransacciones().filter { it.tipo == "Gasto" }
         }
-
-        val adapter = LvTransacAdapter(requireContext(), R.layout.lv_transac_item, transacListMostrar)
-        binding.lvTransac.adapter = adapter
+        binding.lvTransac.adapter = LvTransacAdapter(requireContext(), R.layout.lv_transac_item, transacListMostrar)
     }
+
 
     private fun cambiarTipo(nuevoTipo: Tipo) {
         tipo = nuevoTipo

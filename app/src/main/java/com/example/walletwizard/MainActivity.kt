@@ -1,19 +1,15 @@
 package com.example.walletwizard
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
 import com.example.walletwizard.databinding.ActivityMainBinding
-import com.example.walletwizard.db.DBHelper
+import com.example.walletwizard.db.FinanzasRepository
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
-
-    private val dbHelper = DBHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,15 +25,13 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
         */
-        val db = dbHelper.writableDatabase
-        if (db != null)
-            Toast.makeText(this,"Conectado a la base de datos",Toast.LENGTH_LONG).show()
-        else
-            Toast.makeText(this,"No se pudo conectar",Toast.LENGTH_LONG).show()
+
+        //DataGenerator.insertDummyData(this, true)
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         // Configurar el listener para cerrar el cajón de navegación al seleccionar un ítem y cambiar de fragment si corresponde
         binding.navView.setNavigationItemSelectedListener { menuItem ->
+            // --POR HACER: si se cambia de pantalla con gesto o botón de atrás el menú no cambia--
             menuItem.isChecked = true
             binding.drawerLayout.closeDrawers()
 
@@ -45,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.menu_inicio -> navController.navigate(R.id.nav_inicio)
                 R.id.menu_transac -> navController.navigate(R.id.nav_transac)
-                // Agrega más casos según tus fragments
+                // Agrega más casos según los fragments
             }
             true
         }
