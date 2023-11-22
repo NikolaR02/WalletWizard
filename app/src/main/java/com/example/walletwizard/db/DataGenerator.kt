@@ -32,7 +32,7 @@ object DataGenerator {
         // Insertar cuentas financieras ficticias
         val cuentas = listOf("Cuenta Bancaria A", "Cuenta Bancaria B", "Efectivo")
         for (nombreCuenta in cuentas) {
-            finanzasRepository.insertCuenta(CuentaFinanciera(0, nombreCuenta))
+            finanzasRepository.insertCuenta(CuentaFinanciera(0, nombreCuenta, 0.0))
         }
 
         // Insertar transacciones ficticias
@@ -42,10 +42,10 @@ object DataGenerator {
             val categoriaId = (1..categorias.size).random()
             val nombre = "Transacción $i"
             val fecha = System.currentTimeMillis() // Fecha actual en formato timestamp
-            val tipo = if (i % 2 == 0) "Ingreso" else "Gasto"
+            val tipo = if (i % 2 == 0) TipoTransaccion.INGRESO else TipoTransaccion.GASTO
             val importe = (1..100).random().toDouble()
             val nota = "Nota de la transacción $i"
-            val valoracion = if (tipo == "Ingreso") 0 else (1..5).random()
+            val valoracion = if (tipo == TipoTransaccion.INGRESO) 0 else (1..5).random()
 
             val transaccion = Transaccion(0, nombre, cuentaId, categoriaId, fecha, tipo, importe, nota, valoracion)
             transacciones.add(transaccion)
@@ -53,6 +53,10 @@ object DataGenerator {
 
         for (transaccion in transacciones) {
             finanzasRepository.insertTransaccion(transaccion)
+
+            // Actualizar el saldo de la cuenta después de insertar cada transacción
+            val nuevoSaldo = finanzasRepository.getSaldoCuenta(transaccion.cuentaId) + transaccion.importe
+            finanzasRepository.actualizarSaldoCuenta(transaccion.cuentaId, nuevoSaldo)
         }
     }
 }

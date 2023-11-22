@@ -7,27 +7,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.walletwizard.LvTransacAdapter
 import com.example.walletwizard.R
-import com.example.walletwizard.Transac
 import com.example.walletwizard.databinding.FragmentTransacBinding
 import com.example.walletwizard.db.FinanzasRepository
+import com.example.walletwizard.db.TipoTransaccion
+import com.example.walletwizard.db.Transaccion
 
 class TransacFragment : Fragment() {
 
     private var _binding: FragmentTransacBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
-    // datos temporales hasta finalizar la bd
-    private val transacList = listOf(
-        Transac("Domingo`s pizza", 10.45, 23, 11),
-        Transac("Mercatienda", 36.65, 16, 11),
-        Transac("Corte Frances", 220.98, 29, 9)
-    )
     enum class Tipo { TODOS, INGRESOS, GASTOS }
     private var tipo = Tipo.TODOS
-
-    //
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +28,6 @@ class TransacFragment : Fragment() {
         _binding = FragmentTransacBinding.inflate(inflater, container, false)
 
         setupButtons()
-        // por defecto se abre en la pestaña de todos
         cambiarTipo(Tipo.TODOS)
 
         return binding.root
@@ -55,15 +45,18 @@ class TransacFragment : Fragment() {
     }
 
     private fun mostrar() {
-        val rep = FinanzasRepository(requireContext())
-        val transacListMostrar = when (tipo) {
-            Tipo.TODOS -> rep.getAllTransacciones()
-            Tipo.INGRESOS -> rep.getAllTransacciones().filter { it.tipo == "Ingreso" }
-            Tipo.GASTOS -> rep.getAllTransacciones().filter { it.tipo == "Gasto" }
-        }
-        binding.lvTransac.adapter = LvTransacAdapter(requireContext(), R.layout.lv_transac_item, transacListMostrar)
+        val repository = FinanzasRepository(requireContext())
+        val transacciones = obtenerTransaccionesSegunTipo(repository)
+        binding.lvTransac.adapter = LvTransacAdapter(requireContext(), R.layout.lv_transac_item, transacciones)
     }
 
+    private fun obtenerTransaccionesSegunTipo(repository: FinanzasRepository): List<Transaccion> {
+        return when (tipo) {
+            Tipo.TODOS -> repository.getAllTransacciones()
+            Tipo.INGRESOS -> repository.getAllTransacciones().filter { it.tipo == TipoTransaccion.INGRESO }
+            Tipo.GASTOS -> repository.getAllTransacciones().filter { it.tipo == TipoTransaccion.GASTO }
+        }
+    }
 
     private fun cambiarTipo(nuevoTipo: Tipo) {
         tipo = nuevoTipo

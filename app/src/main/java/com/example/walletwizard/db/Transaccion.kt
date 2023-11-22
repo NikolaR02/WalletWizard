@@ -7,8 +7,13 @@ data class Transaccion(
     val categoriaId: Int,
     //val fecha: String,
     val fecha: Long,
-    val tipo: String,
+    val tipo: TipoTransaccion,
     val importe: Double,
     val nota: String?,
     val valoracion: Int?
 )
+
+enum class TipoTransaccion {
+    INGRESO,
+    GASTO
+}

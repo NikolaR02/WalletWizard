@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import com.example.walletwizard.db.TipoTransaccion
 import com.example.walletwizard.db.Transaccion
 import java.text.DateFormat
 import java.util.Date
@@ -33,9 +34,12 @@ class LvTransacAdapter(
 
         // Verifica si el elemento no es nulo antes de asignar los datos
         if (transac != null) {
+            //nombre
             nombreTextView.text = transac.nombre
-            cantidadTextView.text = context.getString(R.string.euros, transac.importe)
-
+            //importe
+            val signo = if (transac.tipo == TipoTransaccion.INGRESO) R.string.euros else R.string.neuros
+            cantidadTextView.text = context.getString(signo, transac.importe)
+            //fecha
             val dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault())
             val fechaFormateada = dateFormat.format(Date(transac.fecha))
             fechaTextView.text = fechaFormateada

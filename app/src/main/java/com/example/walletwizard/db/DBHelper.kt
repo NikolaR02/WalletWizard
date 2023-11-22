@@ -8,14 +8,15 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
     companion object {
         const val DATABASE_NAME = "finanzas.db"
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 4
     }
 
     // Definir la tabla Cuentas Financieras
     private val createCuentasTable  = """
         CREATE TABLE CuentasFinancieras (
             cuenta_id INTEGER PRIMARY KEY,
-            nombre_cuenta TEXT
+            nombre_cuenta TEXT,
+            saldo REAL DEFAULT 0.0
         )
     """.trimIndent()
 
@@ -27,7 +28,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             cuenta_id INTEGER,
             categoria_id INTEGER,
             fecha INTEGER, 
-            tipo TEXT,
+            tipo TEXT CHECK (tipo IN ('INGRESO', 'GASTO')),
             importe REAL,
             nota TEXT,
             valoracion INTEGER,

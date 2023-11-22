@@ -11,4 +11,5 @@
     <string name="inicio">Inicio</string>
     <string name="transacciones">Transacciones</string>
     <string name="abre_men">Abre menú</string>
+    <string name="neuros">-%1$.2f€</string>
 </resources>
