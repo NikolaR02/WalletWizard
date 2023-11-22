@@ -1,4 +1,4 @@
-package com.example.walletwizard.ui.inicio
+package com.example.walletwizard.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

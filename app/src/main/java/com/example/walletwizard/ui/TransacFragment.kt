@@ -1,4 +1,4 @@
-package com.example.walletwizard.ui.transac
+package com.example.walletwizard.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

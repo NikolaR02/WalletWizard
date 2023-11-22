@@ -6,12 +6,12 @@
     app:startDestination="@+id/nav_inicio" >
     <fragment
         android:id="@+id/nav_inicio"
-        android:name="com.example.walletwizard.ui.inicio.InicioFragment"
+        android:name="com.example.walletwizard.ui.InicioFragment"
         android:label="@string/inicio"
         tools:layout="@layout/fragment_inicio" />
     <fragment
         android:id="@+id/nav_transac"
-        android:name="com.example.walletwizard.ui.transac.TransacFragment"
+        android:name="com.example.walletwizard.ui.TransacFragment"
         android:label="@string/transacciones"
         tools:layout="@layout/fragment_transac" />
 </navigation>
