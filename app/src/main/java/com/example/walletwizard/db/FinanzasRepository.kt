@@ -14,7 +14,7 @@ class FinanzasRepository(context: Context) {
 
         val values = ContentValues().apply {
             put("nombre_cuenta", cuenta.nombreCuenta)
-            put("saldo", 0.0)
+            put("saldo", cuenta.saldo)
         }
 
         return db.insert("CuentasFinancieras", null, values)

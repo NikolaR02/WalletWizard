@@ -12,4 +12,9 @@
     <string name="transacciones">Transacciones</string>
     <string name="abre_men">Abre menú</string>
     <string name="neuros">-%1$.2f€</string>
+    <string name="nombre_de_la_cuenta">Nombre de la cuenta</string>
+    <string name="saldo_inicial">Saldo Inicial</string>
+    <string name="guardar_cuenta">Guardar Cuenta</string>
+    <string name="volver">Volver</string>
+    <string name="ingrese_un_nombre">Ingrese un nombre</string>
 </resources>

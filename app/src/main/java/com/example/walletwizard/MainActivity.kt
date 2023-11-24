@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
 import com.example.walletwizard.databinding.ActivityMainBinding
-import com.example.walletwizard.db.DataGenerator
 
 
 class MainActivity : AppCompatActivity() {
@@ -15,6 +14,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.navView.menu.findItem(R.id.menu_inicio).isChecked = true
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
 
         /* código para controlar con un toolbar
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -26,12 +28,10 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setupWithNavController(navController)
         */
 
-        DataGenerator.insertDummyData(this, true)
+        //DataGenerator.insertDummyData(this, true)
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
         // Configurar el listener para cerrar el cajón de navegación al seleccionar un ítem y cambiar de fragment si corresponde
         binding.navView.setNavigationItemSelectedListener { menuItem ->
-            // --POR HACER: si se cambia de pantalla con gesto o botón de atrás el menú no cambia--
             menuItem.isChecked = true
             binding.drawerLayout.closeDrawers()
 
@@ -39,14 +39,16 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.menu_inicio -> navController.navigate(R.id.nav_inicio)
                 R.id.menu_transac -> navController.navigate(R.id.nav_transac)
-                // Agrega más casos según los fragments
             }
             true
         }
+
         //botón para abrir el menú
         binding.appBarMain.fabToggleDrawer.setOnClickListener {
             toggleDrawer()
         }
+
+
     }
 
     // abrir el menú

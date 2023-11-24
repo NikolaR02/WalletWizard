@@ -1,5 +1,6 @@
 package com.example.walletwizard.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.example.walletwizard.R
 import com.example.walletwizard.databinding.FragmentInicioBinding
 import com.example.walletwizard.db.FinanzasRepository
+import com.example.walletwizard.db.NewCuentaF
 
 class InicioFragment : Fragment() {
 
@@ -26,7 +28,13 @@ class InicioFragment : Fragment() {
         val (listaSaldos, totalSaldos) = obtenerListaSaldosFormateados(repository)
 
         binding.tvSaldoTotal.text = getString(R.string.saldo_total, totalSaldos)
-        binding.lvSaldos.adapter = ArrayAdapter(requireContext(), R.layout.lv_activos_item, listaSaldos)
+        val adapter =  ArrayAdapter(requireContext(), R.layout.lv_activos_item, listaSaldos)
+        binding.lvSaldos.adapter = adapter
+
+        binding.fabNueva.setOnClickListener {
+            val intent = Intent(activity, NewCuentaF::class.java)
+            startActivity(intent)
+        }
 
         return binding.root
     }

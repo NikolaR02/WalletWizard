@@ -1,17 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@+id/nav_inicio" >
+
     <fragment
         android:id="@+id/nav_inicio"
         android:name="com.example.walletwizard.ui.InicioFragment"
         android:label="@string/inicio"
-        tools:layout="@layout/fragment_inicio" />
+        tools:layout="@layout/fragment_inicio" >
+        <action
+            android:id="@+id/action_nav_inicio_to_nav_transac"
+            app:destination="@id/nav_transac" />
+    </fragment>
+
     <fragment
         android:id="@+id/nav_transac"
         android:name="com.example.walletwizard.ui.TransacFragment"
         android:label="@string/transacciones"
-        tools:layout="@layout/fragment_transac" />
+        tools:layout="@layout/fragment_transac" >
+        <action
+            android:id="@+id/action_nav_transac_to_nav_inicio"
+            app:destination="@id/nav_inicio" />
+    </fragment>
+
 </navigation>
