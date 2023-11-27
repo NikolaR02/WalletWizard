@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigarion_view">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:checkableBehavior="single">
         <item
             android:id="@+id/menu_inicio"
             android:icon="@drawable/account_balance_24"

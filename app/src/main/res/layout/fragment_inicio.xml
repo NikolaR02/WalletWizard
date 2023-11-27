@@ -10,26 +10,29 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="32dp">
+        android:orientation="vertical">
 
         <!-- Campo de texto para mostrar el Saldo Total -->
         <TextView
             android:id="@+id/tvSaldoTotal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#3E6E9E"
             android:gravity="center"
+
+            android:padding="24dp"
             android:text="@string/saldo_total"
-            android:textSize="32sp"
-            android:paddingBottom="12dp"/>
+            android:textColor="@color/cardview_light_background"
+            android:textSize="32sp" />
 
         <!-- Lista de saldos distribuidos en cuentas -->
         <ListView
             android:id="@+id/lvSaldos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="#CCCCCC"
-            android:dividerHeight="8dp" />
+            android:divider="#ffffff"
+            android:dividerHeight="16dp"
+            android:padding="24dp"/>
 
 
     </LinearLayout>

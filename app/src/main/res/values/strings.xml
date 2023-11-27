@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">WalletWizard</string>
 
-    <string name="saldo_total">Saldo Total: %1$.2f€</string>
+    <string name="saldo_total">Saldo Total\n%1$.2f€</string>
 
     <string name="todos">Todos</string>
     <string name="ingresos">Ingresos</string>

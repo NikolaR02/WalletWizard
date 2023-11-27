@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
 import com.example.walletwizard.databinding.ActivityMainBinding
+import com.example.walletwizard.db.DataGenerator
 
 
 class MainActivity : AppCompatActivity() {
@@ -18,17 +19,7 @@ class MainActivity : AppCompatActivity() {
         binding.navView.menu.findItem(R.id.menu_inicio).isChecked = true
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
-        /* código para controlar con un toolbar
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration( setOf( R.id.nav_inicio), binding.drawerLayout
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.navView.setupWithNavController(navController)
-        */
-
-        //DataGenerator.insertDummyData(this, true)
+        DataGenerator.insertDummyData(this, true)
 
         // Configurar el listener para cerrar el cajón de navegación al seleccionar un ítem y cambiar de fragment si corresponde
         binding.navView.setNavigationItemSelectedListener { menuItem ->
@@ -60,3 +51,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+/* código para controlar con un toolbar
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        appBarConfiguration = AppBarConfiguration( setOf( R.id.nav_inicio), binding.drawerLayout
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        binding.navView.setupWithNavController(navController)
+        */
