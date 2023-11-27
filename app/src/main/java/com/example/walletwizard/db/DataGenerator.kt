@@ -36,7 +36,6 @@ object DataGenerator {
         }
 
         // Insertar transacciones ficticias
-        val transacciones = mutableListOf<Transaccion>()
         for (i in 1..10) {
             val cuentaId = (1..cuentas.size).random()
             val categoriaId = (1..categorias.size).random()
@@ -48,15 +47,7 @@ object DataGenerator {
             val valoracion = if (tipo == TipoTransaccion.INGRESO) 0 else (1..5).random()
 
             val transaccion = Transaccion(0, nombre, cuentaId, categoriaId, fecha, tipo, importe, nota, valoracion)
-            transacciones.add(transaccion)
-        }
-
-        for (transaccion in transacciones) {
             finanzasRepository.insertTransaccion(transaccion)
-
-            // Actualizar el saldo de la cuenta después de insertar cada transacción
-            val nuevoSaldo = finanzasRepository.getSaldoCuenta(transaccion.cuentaId) + transaccion.importe
-            finanzasRepository.actualizarSaldoCuenta(transaccion.cuentaId, nuevoSaldo)
         }
     }
 }

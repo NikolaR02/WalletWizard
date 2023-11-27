@@ -31,8 +31,22 @@ class InicioFragment : Fragment() {
         val adapter =  ArrayAdapter(requireContext(), R.layout.lv_activos_item, listaSaldos)
         binding.lvSaldos.adapter = adapter
 
+        binding.lvSaldos.setOnItemClickListener { _, _, position, _ ->
+            // Obtener la cuenta seleccionada
+            val cuentaSeleccionada = repository.getAllCuentas()[position]
+
+            // Crear un Intent con el id de la cuenta
+            val intent = Intent(requireContext(), NewCuentaF::class.java)
+            intent.putExtra("cuenta_id", cuentaSeleccionada.cuentaId)
+            intent.putExtra("nombre", cuentaSeleccionada.nombreCuenta)
+            intent.putExtra("saldo", cuentaSeleccionada.saldo)
+
+            // Iniciar la actividad
+            startActivity(intent)
+        }
+
         binding.fabNueva.setOnClickListener {
-            val intent = Intent(activity, NewCuentaF::class.java)
+            val intent = Intent(requireContext(), NewCuentaF::class.java)
             startActivity(intent)
         }
 

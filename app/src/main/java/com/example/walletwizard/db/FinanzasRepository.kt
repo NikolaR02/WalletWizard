@@ -20,7 +20,7 @@ class FinanzasRepository(context: Context) {
         return db.insert("CuentasFinancieras", null, values)
     }
 
-    fun actualizarSaldoCuenta(cuentaId: Int, nuevoSaldo: Double) {
+    /*fun actualizarSaldoCuenta(cuentaId: Int, nuevoSaldo: Double) {
         val db = dbHelper.writableDatabase
 
         val values = ContentValues().apply {
@@ -28,6 +28,17 @@ class FinanzasRepository(context: Context) {
         }
 
         db.update("CuentasFinancieras", values, "cuenta_id = ?", arrayOf(cuentaId.toString()))
+    }*/
+
+    fun actualizarCuenta(cuenta: CuentaFinanciera) {
+        val db = dbHelper.writableDatabase
+
+        val values = ContentValues().apply {
+            put("nombre_cuenta", cuenta.nombreCuenta)
+            put("saldo", cuenta.saldo)
+        }
+
+        db.update("CuentasFinancieras", values, "cuenta_id = ?", arrayOf(cuenta.cuentaId.toString()))
     }
 
     fun getAllCuentas(): List<CuentaFinanciera> {
@@ -40,7 +51,7 @@ class FinanzasRepository(context: Context) {
             null,
             null,
             null,
-            null
+            "saldo desc"
         )
 
         val cuentas = mutableListOf<CuentaFinanciera>()
@@ -59,7 +70,44 @@ class FinanzasRepository(context: Context) {
         return cuentas
     }
 
-    fun getSaldoCuenta(cuentaId: Int): Double {
+    fun getCuenta(cuentaId: Int): CuentaFinanciera? {
+        val db = dbHelper.readableDatabase
+
+        val cursor = db.query(
+            "CuentasFinancieras",
+            arrayOf("cuenta_id", "nombre_cuenta", "saldo"),
+            "cuenta_id = ?",
+            arrayOf(cuentaId.toString()),
+            null,
+            null,
+            null
+        )
+
+        val cuenta: CuentaFinanciera? = if (cursor.moveToFirst()) {
+            val cuentaIdIndex = cursor.getColumnIndex("cuenta_id")
+            val nombreCuentaIndex = cursor.getColumnIndex("nombre_cuenta")
+            val saldoIndex = cursor.getColumnIndex("saldo")
+
+            if (cuentaIdIndex != -1 && nombreCuentaIndex != -1 && saldoIndex != -1) {
+                val id = cursor.getInt(cuentaIdIndex)
+                val nombreCuenta = cursor.getString(nombreCuentaIndex)
+                val saldo = cursor.getDouble(saldoIndex)
+                CuentaFinanciera(id, nombreCuenta, saldo)
+            } else {
+                null
+            }
+        } else {
+            null
+        }
+
+        cursor.close()
+
+        return cuenta
+    }
+
+
+
+    /*fun getSaldoCuenta(cuentaId: Int): Double {
         val db = dbHelper.readableDatabase
 
         val cursor = db.query(
@@ -76,7 +124,7 @@ class FinanzasRepository(context: Context) {
         cursor.close()
 
         return saldo
-    }
+    }*/
 
     fun deleteCuenta(cuentaId: Int): Int {
         val db = dbHelper.writableDatabase
@@ -149,9 +197,18 @@ class FinanzasRepository(context: Context) {
         val transaccionId = db.insert("Transacciones", null, values)
 
         if (transaccionId != -1L) {
+            val cuenta = getCuenta(transaccion.cuentaId)
+            if (cuenta != null) {
+                val nuevoSaldo = cuenta.saldo + transaccion.importe
+                cuenta.saldo = nuevoSaldo
+                actualizarCuenta(cuenta)
+            }
+        }
+
+        /*if (transaccionId != -1L) {
             val nuevoSaldo = getSaldoCuenta(transaccion.cuentaId) + transaccion.importe
             actualizarSaldoCuenta(transaccion.cuentaId, nuevoSaldo)
-        }
+        }*/
 
         return transaccionId
     }

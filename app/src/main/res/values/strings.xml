@@ -12,9 +12,17 @@
     <string name="transacciones">Transacciones</string>
     <string name="abre_men">Abre menú</string>
     <string name="neuros">-%1$.2f€</string>
-    <string name="nombre_de_la_cuenta">Nombre de la cuenta</string>
+    <string name="nombre_de_la_cuenta">Nombre de la cuenta o el activo</string>
     <string name="saldo_inicial">Saldo Inicial</string>
-    <string name="guardar_cuenta">Guardar Cuenta</string>
+    <string name="guardar_cuenta">Guardar</string>
     <string name="volver">Volver</string>
     <string name="ingrese_un_nombre">Ingrese un nombre</string>
+    <string name="borrar_cuenta">Borrar</string>
+    <string name="guardando_cuenta">Guardando</string>
+    <string name="modificar_cuenta">Modificar %1$s</string>
+    <string name="introduce_un_nombre_descriptivo_y_el_saldo_actual_si_tiene">Introduce un nombre descriptivo y el saldo actual si tiene</string>
+    <string name="confirmacion_borrar_cuenta">¿Estás seguro?</string>
+    <string name="confirmacion_borrar_cuenta_mensaje">Esta acción eliminará permanentemente la cuenta y las transferencias asosiadas. ¿Deseas continuar?</string>
+    <string name="si">Sí</string>
+    <string name="no">No</string>
 </resources>
