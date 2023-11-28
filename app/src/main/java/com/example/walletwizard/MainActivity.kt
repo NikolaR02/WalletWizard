@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.navView.menu.findItem(R.id.menu_inicio).isChecked = true
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
         DataGenerator.insertDummyData(this, true)

@@ -15,9 +15,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FF9CBA73"
+            android:background="@color/azul_logo"
             android:orientation="horizontal"
-            android:padding="12dp">
+            android:paddingTop="40dp"
+            android:paddingBottom="10dp">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnTodos"
@@ -25,12 +26,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/selected_btn_background"
                 android:clickable="true"
-                android:text="@string/todos"
-                android:textColor="#000000"
                 android:focusable="true"
-                app:layout_constraintWidth_max="10dp"/>
+                android:text="@string/todos"
+                android:textColor="#ffffff"
+                android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnIngres"
@@ -38,11 +38,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/ingresos"
-                android:background="@drawable/selected_btn_background"
                 android:clickable="true"
-                android:textColor="#000000"
-                android:focusable="true" />
+                android:focusable="true"
+                android:text="@string/ingresos"
+                android:textColor="#ffffff"
+                android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnGastos"
@@ -50,11 +50,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/gastos"
-                android:background="@drawable/selected_btn_background"
                 android:clickable="true"
-                android:textColor="#000000"
-                android:focusable="true" />
+                android:focusable="true"
+                android:text="@string/gastos"
+                android:textColor="#ffffff"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -65,15 +65,25 @@
             android:divider="#CCCCCC"
             android:dividerHeight="3dp"
             android:padding="16dp" />
-
-        <!-- botón flotante
-           <com.google.android.material.floatingactionbutton.FloatingActionButton
-               android:id="@+id/fab"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_gravity="bottom|end"
-               android:layout_marginEnd="16dp"
-               android:layout_marginBottom="16dp"
-               app:srcCompat="@android:drawable/ic_dialog_email" /> -->
     </LinearLayout>
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabNueva"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/nuevo"
+        android:src="@drawable/add_24"
+        app:backgroundTint="@color/seleccionado"
+        app:borderWidth="0dp"
+        app:elevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.87"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.92"
+        app:maxImageSize="48dp"
+        app:rippleColor="@android:color/transparent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

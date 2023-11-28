@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import com.example.walletwizard.R
 import com.example.walletwizard.databinding.FragmentInicioBinding
 import com.example.walletwizard.db.FinanzasRepository
-import com.example.walletwizard.db.NewCuentaF
 
 class InicioFragment : Fragment() {
 
@@ -62,12 +61,15 @@ class InicioFragment : Fragment() {
         val cuentas = repository.getAllCuentas()
         var totalSaldos = 0.0
 
-        val listaSaldos = cuentas.map { cuenta ->
+        val listaSaldos = mutableListOf<String>()
+
+        for (cuenta in cuentas) {
             val saldoFormateado = "${cuenta.nombreCuenta} \n Saldo: ${getString(R.string.euros, cuenta.saldo)}"
+            listaSaldos.add(saldoFormateado)
             totalSaldos += cuenta.saldo
-            saldoFormateado
         }
 
         return Pair(listaSaldos, totalSaldos)
     }
+
 }

@@ -1,0 +1,29 @@
+<!-- nav_header.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:gravity="center"
+    android:background="@color/azul_logo"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <!-- Imagen del logo de la aplicación -->
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:src="@mipmap/icono_ww"
+        android:layout_marginEnd="8dp"
+        android:importantForAccessibility="no" />
+
+    <!-- Texto con el nombre de la aplicación -->
+    <TextView
+        android:id="@+id/textViewAppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@android:color/white"
+        android:layout_marginEnd="8dp"
+        android:textSize="24sp"/>
+
+</LinearLayout>

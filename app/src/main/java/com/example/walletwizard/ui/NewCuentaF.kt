@@ -1,4 +1,4 @@
-package com.example.walletwizard.db
+package com.example.walletwizard.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,8 @@ import androidx.core.content.ContextCompat
 import com.example.walletwizard.MainActivity
 import com.example.walletwizard.R
 import com.example.walletwizard.databinding.ActivityNewCuentaFBinding
+import com.example.walletwizard.db.CuentaFinanciera
+import com.example.walletwizard.db.FinanzasRepository
 
 class NewCuentaF : AppCompatActivity() {
 

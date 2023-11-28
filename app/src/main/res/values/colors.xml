@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="seleccionado">#FF9CBA73</color>
+    <color name="azul_logo">#3E6E9E</color>
 </resources>

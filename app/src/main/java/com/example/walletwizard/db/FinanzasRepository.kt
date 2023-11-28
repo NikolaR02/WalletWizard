@@ -20,16 +20,6 @@ class FinanzasRepository(context: Context) {
         return db.insert("CuentasFinancieras", null, values)
     }
 
-    /*fun actualizarSaldoCuenta(cuentaId: Int, nuevoSaldo: Double) {
-        val db = dbHelper.writableDatabase
-
-        val values = ContentValues().apply {
-            put("saldo", nuevoSaldo)
-        }
-
-        db.update("CuentasFinancieras", values, "cuenta_id = ?", arrayOf(cuentaId.toString()))
-    }*/
-
     fun actualizarCuenta(cuenta: CuentaFinanciera) {
         val db = dbHelper.writableDatabase
 
@@ -104,27 +94,6 @@ class FinanzasRepository(context: Context) {
 
         return cuenta
     }
-
-
-
-    /*fun getSaldoCuenta(cuentaId: Int): Double {
-        val db = dbHelper.readableDatabase
-
-        val cursor = db.query(
-            "CuentasFinancieras",
-            arrayOf("saldo"),
-            "cuenta_id = ?",
-            arrayOf(cuentaId.toString()),
-            null,
-            null,
-            null
-        )
-
-        val saldo = if (cursor.moveToFirst()) cursor.getDouble(0) else 0.0
-        cursor.close()
-
-        return saldo
-    }*/
 
     fun deleteCuenta(cuentaId: Int): Int {
         val db = dbHelper.writableDatabase
