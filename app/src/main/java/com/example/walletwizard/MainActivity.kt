@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
 import com.example.walletwizard.databinding.ActivityMainBinding
-import com.example.walletwizard.db.DataGenerator
 
 
 class MainActivity : AppCompatActivity() {
@@ -18,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
-        DataGenerator.insertDummyData(this, true)
+        //DataGenerator.insertDummyData(this, true)
 
         // Configurar el listener para cerrar el cajón de navegación al seleccionar un ítem y cambiar de fragment si corresponde
         binding.navView.setNavigationItemSelectedListener { menuItem ->

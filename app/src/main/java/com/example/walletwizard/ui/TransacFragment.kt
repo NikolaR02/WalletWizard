@@ -1,9 +1,11 @@
 package com.example.walletwizard.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import com.example.walletwizard.LvTransacAdapter
 import com.example.walletwizard.R
@@ -29,6 +31,31 @@ class TransacFragment : Fragment() {
 
         setupButtons()
         cambiarTipo(Tipo.TODOS)
+
+        binding.fabNueva.setOnClickListener {
+            val intent = Intent(requireContext(), NewTransaccion::class.java)
+            startActivity(intent)
+        }
+
+        binding.lvTransac.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            // Obtener la transacción seleccionada
+            val transaccionSeleccionada = obtenerTransaccionesSegunTipo(FinanzasRepository(requireContext()))[position]
+
+            // Crear un Intent con los datos de la transacción
+            val intent = Intent(requireContext(), NewTransaccion::class.java)
+            intent.putExtra("transaccion_id", transaccionSeleccionada.transaccionId)
+            intent.putExtra("nombre", transaccionSeleccionada.nombre)
+            intent.putExtra("cuenta_id", transaccionSeleccionada.cuentaId)
+            intent.putExtra("categoria_id", transaccionSeleccionada.categoriaId)
+            intent.putExtra("fecha", transaccionSeleccionada.fecha)
+            intent.putExtra("tipo", transaccionSeleccionada.tipo)
+            intent.putExtra("importe", transaccionSeleccionada.importe)
+            intent.putExtra("nota", transaccionSeleccionada.nota)
+            intent.putExtra("valoracion", transaccionSeleccionada.valoracion)
+
+            // Iniciar la actividad
+            startActivity(intent)
+        }
 
         return binding.root
     }

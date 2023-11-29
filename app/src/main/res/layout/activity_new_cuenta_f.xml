@@ -32,7 +32,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/azul_logo"
-        android:text="@string/guardar_cuenta"
+        android:text="@string/guardar"
         android:textColor="#FFFFFF"
         android:layout_margin="10dp"/>
 

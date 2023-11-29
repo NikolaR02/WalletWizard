@@ -7,6 +7,8 @@ class FinanzasRepository(context: Context) {
 
     private val dbHelper = DBHelper(context)
 
+
+    // ---------------------------------------------------------------------------------------------
     // Métodos para la tabla CuentasFinancieras
 
     fun insertCuenta(cuenta: CuentaFinanciera): Long {
@@ -101,6 +103,8 @@ class FinanzasRepository(context: Context) {
         return db.delete("CuentasFinancieras", "cuenta_id = ?", arrayOf(cuentaId.toString()))
     }
 
+
+    // ---------------------------------------------------------------------------------------------
     // Métodos para la tabla Categorías
 
     fun insertCategoria(categoria: Categoria): Long {
@@ -112,6 +116,40 @@ class FinanzasRepository(context: Context) {
 
         return db.insert("Categorias", null, values)
     }
+
+    fun getCategoria(categoriaId: Int): Categoria? {
+        val db = dbHelper.readableDatabase
+
+        val cursor = db.query(
+            "Categorias",
+            arrayOf("categoria_id", "nombre"),
+            "categoria_id = ?",
+            arrayOf(categoriaId.toString()),
+            null,
+            null,
+            null
+        )
+
+        val categoria: Categoria? = if (cursor.moveToFirst()) {
+            val categoriaIdIndex = cursor.getColumnIndex("categoria_id")
+            val nombreIndex = cursor.getColumnIndex("nombre")
+
+            if (categoriaIdIndex != -1 && nombreIndex != -1) {
+                val id = cursor.getInt(categoriaIdIndex)
+                val nombre = cursor.getString(nombreIndex)
+                Categoria(id, nombre)
+            } else {
+                null
+            }
+        } else {
+            null
+        }
+
+        cursor.close()
+
+        return categoria
+    }
+
 
     fun getAllCategorias(): List<Categoria> {
         val db = dbHelper.readableDatabase
@@ -147,6 +185,7 @@ class FinanzasRepository(context: Context) {
         return db.delete("Categorias", "categoria_id = ?", arrayOf(categoriaId.toString()))
     }
 
+    // ---------------------------------------------------------------------------------------------
     // Métodos para la tabla Transacciones
 
     fun insertTransaccion(transaccion: Transaccion): Long {
@@ -168,19 +207,48 @@ class FinanzasRepository(context: Context) {
         if (transaccionId != -1L) {
             val cuenta = getCuenta(transaccion.cuentaId)
             if (cuenta != null) {
-                val nuevoSaldo = cuenta.saldo + transaccion.importe
+                val nuevoSaldo = calcularNuevoSaldo(cuenta, transaccion)
                 cuenta.saldo = nuevoSaldo
                 actualizarCuenta(cuenta)
             }
         }
-
-        /*if (transaccionId != -1L) {
-            val nuevoSaldo = getSaldoCuenta(transaccion.cuentaId) + transaccion.importe
-            actualizarSaldoCuenta(transaccion.cuentaId, nuevoSaldo)
-        }*/
-
         return transaccionId
     }
+
+    fun actualizarTransaccion(transaccion: Transaccion) {
+        val db = dbHelper.writableDatabase
+
+        val values = ContentValues().apply {
+            put("nombre", transaccion.nombre)
+            put("cuenta_id", transaccion.cuentaId)
+            put("categoria_id", transaccion.categoriaId)
+            put("fecha", transaccion.fecha)
+            put("tipo", transaccion.tipo.name)
+            put("importe", transaccion.importe)
+            put("nota", transaccion.nota)
+            put("valoracion", transaccion.valoracion)
+        }
+
+        db.update("Transacciones", values, "transaccion_id = ?", arrayOf(transaccion.transaccionId.toString()))
+
+        // Actualizar el saldo de la cuenta asociada
+        val cuenta = getCuenta(transaccion.cuentaId)
+        if (cuenta != null) {
+            val nuevoSaldo = calcularNuevoSaldo(cuenta, transaccion)
+            cuenta.saldo = nuevoSaldo
+            actualizarCuenta(cuenta)
+        }
+    }
+
+    // Función para calcular el nuevo saldo de la cuenta al insertar o actualizar una transacción
+    private fun calcularNuevoSaldo(cuenta: CuentaFinanciera, transaccion: Transaccion): Double {
+        return if (transaccion.tipo == TipoTransaccion.INGRESO) {
+            cuenta.saldo + transaccion.importe
+        } else {
+            cuenta.saldo - transaccion.importe
+        }
+    }
+
 
     fun getAllTransacciones(): List<Transaccion> {
         val db = dbHelper.readableDatabase

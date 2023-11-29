@@ -4,88 +4,97 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal|top"
     android:orientation="vertical"
+    android:paddingTop="20dp"
     android:paddingStart="18dp"
     android:paddingEnd="18dp">
 
     <EditText
         android:id="@+id/etNombreTransaccion"
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="48dp"
         android:autofillHints="username"
         android:hint="@string/nombre_de_la_transaccion"
         android:inputType="text"
         android:maxWidth="300dp"
-        android:layout_margin="10dp"/>
+        android:layout_margin="4dp"/>
 
     <Spinner
         android:id="@+id/spinnerCuenta"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_margin="10dp"
+        android:layout_margin="4dp"
         android:prompt="@string/seleccionar_cuenta"/>
 
     <Spinner
         android:id="@+id/spinnerCategoria"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_margin="10dp"
+        android:layout_margin="4dp"
         android:prompt="@string/seleccionar_categoria"/>
 
-    <EditText
-        android:id="@+id/etFecha"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/btnFechaPicker"
+        android:layout_width="290dp"
         android:layout_height="48dp"
-        android:autofillHints="date"
-        android:hint="@string/fecha"
-        android:inputType="date"
-        android:maxWidth="300dp"
-        android:layout_margin="10dp"/>
+        android:layout_margin="4dp"
+        android:text="@string/seleccionar_fecha"
+        android:backgroundTint="@color/azul_logo"
+        android:textColor="#FFFFFF"/>
 
-    <Spinner
-        android:id="@+id/spinnerTipo"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_margin="10dp"
-        android:prompt="@string/seleccionar_tipo"/>
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchTipo"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_margin="4dp"
+        android:text="@string/tipo"/>
 
     <EditText
         android:id="@+id/etImporte"
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="48dp"
         android:autofillHints="amount"
         android:hint="@string/importe"
         android:inputType="numberDecimal"
         android:maxWidth="300dp"
-        android:layout_margin="10dp"/>
+        android:layout_margin="4dp"/>
 
     <EditText
         android:id="@+id/etNota"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_width="320dp"
+        android:layout_height="120dp"
         android:autofillHints="note"
         android:hint="@string/nota"
-        android:inputType="text"
-        android:maxWidth="300dp"
-        android:layout_margin="10dp"/>
+        android:inputType="textMultiLine"
+        android:layout_margin="4dp"/>
 
-    <EditText
-        android:id="@+id/etValoracion"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:autofillHints="rating"
-        android:hint="@string/valoracion"
-        android:inputType="number"
-        android:maxWidth="300dp"
-        android:layout_margin="10dp"/>
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:rating="0"
+        android:stepSize="1"
+        android:layout_margin="4dp"/>
 
     <Button
         android:id="@+id/btnGuardarTransaccion"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/azul_logo"
-        android:text="@string/guardar_transaccion"
+        android:text="@string/guardar"
         android:textColor="#FFFFFF"
-        android:layout_margin="10dp"/>
+        android:layout_margin="4dp"/>
+
+    <Button
+        android:id="@+id/btnBorrarTransaccion"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/azul_logo"
+        android:text="@string/borrar_cuenta"
+        android:textColor="#FFFFFF"
+        android:visibility="gone"
+        android:layout_margin="4dp" />
+
 
     <Button
         android:id="@+id/btnVolverTransaccion"
@@ -94,7 +103,7 @@
         android:backgroundTint="@color/azul_logo"
         android:text="@string/volver"
         android:textColor="#FFFFFF"
-        android:layout_margin="10dp" />
+        android:layout_margin="4dp" />
 
     <TextView
         android:id="@+id/tvMensajeTransaccion"
