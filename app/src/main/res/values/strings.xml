@@ -26,7 +26,7 @@
     <string name="modificar_cuenta">Modificar %1$s</string>
 
     <string name="introduce_un_nombre_descriptivo_y_el_saldo_actual_si_tiene">Introduce un nombre descriptivo y el saldo actual si tiene</string>
-    <string name="confirmacion_borrar_cuenta">¿Estás seguro?</string>
+    <string name="confirmacion_borrar">¿Estás seguro?</string>
     <string name="confirmacion_borrar_cuenta_mensaje">Esta acción eliminará permanentemente la cuenta y las transferencias asosiadas. ¿Deseas continuar?</string>
     <string name="si">Sí</string>
     <string name="no">No</string>
@@ -44,4 +44,5 @@
     <string name="tipo">Ingreso (desactiva si es gasto)</string>
     <string name="importe">Importe</string>
     <string name="nota">Nota</string>
+    <string name="confirmacion_borrar_transaccion_mensaje">Esta acción eliminará permanentemente la transferencia. ¿Deseas continuar?</string>
 </resources>

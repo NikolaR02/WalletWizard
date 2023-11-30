@@ -23,6 +23,6 @@
         app:menu="@menu/nav_menu"
         app:itemIconSize="32dp"
         app:itemHorizontalPadding="20dp"
-        app:itemVerticalPadding="20dp">
+        app:itemVerticalPadding="16dp">
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

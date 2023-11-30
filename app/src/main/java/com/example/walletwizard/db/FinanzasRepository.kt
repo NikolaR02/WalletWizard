@@ -7,185 +7,110 @@ class FinanzasRepository(context: Context) {
 
     private val dbHelper = DBHelper(context)
 
-
-    // ---------------------------------------------------------------------------------------------
     // Métodos para la tabla CuentasFinancieras
 
-    fun insertCuenta(cuenta: CuentaFinanciera): Long {
-        val db = dbHelper.writableDatabase
-
-        val values = ContentValues().apply {
+    fun insertCuenta(cuenta: CuentaFinanciera): Long = dbHelper.writableDatabase.insert(
+        "CuentasFinancieras", null,
+        ContentValues().apply {
             put("nombre_cuenta", cuenta.nombreCuenta)
             put("saldo", cuenta.saldo)
         }
-
-        return db.insert("CuentasFinancieras", null, values)
-    }
+    )
 
     fun actualizarCuenta(cuenta: CuentaFinanciera) {
-        val db = dbHelper.writableDatabase
-
-        val values = ContentValues().apply {
-            put("nombre_cuenta", cuenta.nombreCuenta)
-            put("saldo", cuenta.saldo)
-        }
-
-        db.update("CuentasFinancieras", values, "cuenta_id = ?", arrayOf(cuenta.cuentaId.toString()))
+        dbHelper.writableDatabase.update(
+            "CuentasFinancieras",
+            ContentValues().apply {
+                put("nombre_cuenta", cuenta.nombreCuenta)
+                put("saldo", cuenta.saldo)
+            },
+            "cuenta_id = ?", arrayOf(cuenta.cuentaId.toString())
+        )
     }
 
-    fun getAllCuentas(): List<CuentaFinanciera> {
-        val db = dbHelper.readableDatabase
-
-        val cursor = db.query(
-            "CuentasFinancieras",
-            arrayOf("cuenta_id", "nombre_cuenta", "saldo"),
-            null,
-            null,
-            null,
-            null,
-            "saldo desc"
-        )
-
-        val cuentas = mutableListOf<CuentaFinanciera>()
-
-        with(cursor) {
-            while (moveToNext()) {
-                val cuentaId = getInt(getColumnIndexOrThrow("cuenta_id"))
-                val nombreCuenta = getString(getColumnIndexOrThrow("nombre_cuenta"))
-                val saldo = getDouble(getColumnIndexOrThrow("saldo"))
-
-                cuentas.add(CuentaFinanciera(cuentaId, nombreCuenta, saldo))
-            }
-        }
-        cursor.close()
-
-        return cuentas
+    fun getAllCuentas(): List<CuentaFinanciera> = dbHelper.readableDatabase.query(
+        "CuentasFinancieras",
+        arrayOf("cuenta_id", "nombre_cuenta", "saldo"),
+        null, null, null, null, "saldo desc"
+    ).use { cursor ->
+        generateSequence { if (cursor.moveToNext()) cursor else null }
+            .map {
+                CuentaFinanciera(
+                    it.getInt(it.getColumnIndexOrThrow("cuenta_id")),
+                    it.getString(it.getColumnIndexOrThrow("nombre_cuenta")),
+                    it.getDouble(it.getColumnIndexOrThrow("saldo"))
+                )
+            }.toList()
     }
 
-    fun getCuenta(cuentaId: Int): CuentaFinanciera? {
-        val db = dbHelper.readableDatabase
-
-        val cursor = db.query(
-            "CuentasFinancieras",
-            arrayOf("cuenta_id", "nombre_cuenta", "saldo"),
-            "cuenta_id = ?",
-            arrayOf(cuentaId.toString()),
-            null,
-            null,
-            null
-        )
-
-        val cuenta: CuentaFinanciera? = if (cursor.moveToFirst()) {
-            val cuentaIdIndex = cursor.getColumnIndex("cuenta_id")
-            val nombreCuentaIndex = cursor.getColumnIndex("nombre_cuenta")
-            val saldoIndex = cursor.getColumnIndex("saldo")
-
-            if (cuentaIdIndex != -1 && nombreCuentaIndex != -1 && saldoIndex != -1) {
-                val id = cursor.getInt(cuentaIdIndex)
-                val nombreCuenta = cursor.getString(nombreCuentaIndex)
-                val saldo = cursor.getDouble(saldoIndex)
-                CuentaFinanciera(id, nombreCuenta, saldo)
-            } else {
-                null
-            }
+    fun getCuenta(cuentaId: Int): CuentaFinanciera? = dbHelper.readableDatabase.query(
+        "CuentasFinancieras",
+        arrayOf("cuenta_id", "nombre_cuenta", "saldo"),
+        "cuenta_id = ?", arrayOf(cuentaId.toString()),
+        null, null, null
+    ).use { cursor ->
+        if (cursor.moveToFirst()) {
+            CuentaFinanciera(
+                cursor.getInt(cursor.getColumnIndexOrThrow("cuenta_id")),
+                cursor.getString(cursor.getColumnIndexOrThrow("nombre_cuenta")),
+                cursor.getDouble(cursor.getColumnIndexOrThrow("saldo"))
+            )
         } else {
             null
         }
-
-        cursor.close()
-
-        return cuenta
     }
 
-    fun deleteCuenta(cuentaId: Int): Int {
-        val db = dbHelper.writableDatabase
+    // Función para calcular el nuevo saldo de la cuenta al insertar, actualizar o borrar una transacción
+    private fun calcularNuevoSaldo(saldoActual: Double, diferenciaImporte: Double, tipoTransaccion: TipoTransaccion): Double =
+        if (tipoTransaccion == TipoTransaccion.INGRESO) saldoActual + diferenciaImporte
+        else saldoActual - diferenciaImporte
 
-        return db.delete("CuentasFinancieras", "cuenta_id = ?", arrayOf(cuentaId.toString()))
-    }
+    fun deleteCuenta(cuentaId: Int): Int = dbHelper.writableDatabase.delete(
+        "CuentasFinancieras", "cuenta_id = ?", arrayOf(cuentaId.toString())
+    )
 
-
-    // ---------------------------------------------------------------------------------------------
     // Métodos para la tabla Categorías
 
-    fun insertCategoria(categoria: Categoria): Long {
-        val db = dbHelper.writableDatabase
-
-        val values = ContentValues().apply {
+    fun insertCategoria(categoria: Categoria): Long = dbHelper.writableDatabase.insert(
+        "Categorias", null,
+        ContentValues().apply {
             put("nombre", categoria.nombre)
         }
+    )
 
-        return db.insert("Categorias", null, values)
-    }
-
-    fun getCategoria(categoriaId: Int): Categoria? {
-        val db = dbHelper.readableDatabase
-
-        val cursor = db.query(
-            "Categorias",
-            arrayOf("categoria_id", "nombre"),
-            "categoria_id = ?",
-            arrayOf(categoriaId.toString()),
-            null,
-            null,
-            null
-        )
-
-        val categoria: Categoria? = if (cursor.moveToFirst()) {
-            val categoriaIdIndex = cursor.getColumnIndex("categoria_id")
-            val nombreIndex = cursor.getColumnIndex("nombre")
-
-            if (categoriaIdIndex != -1 && nombreIndex != -1) {
-                val id = cursor.getInt(categoriaIdIndex)
-                val nombre = cursor.getString(nombreIndex)
-                Categoria(id, nombre)
-            } else {
-                null
-            }
+    fun getCategoria(categoriaId: Int): Categoria? = dbHelper.readableDatabase.query(
+        "Categorias",
+        arrayOf("categoria_id", "nombre"),
+        "categoria_id = ?", arrayOf(categoriaId.toString()),
+        null, null, null
+    ).use { cursor ->
+        if (cursor.moveToFirst()) {
+            Categoria(
+                cursor.getInt(cursor.getColumnIndexOrThrow("categoria_id")),
+                cursor.getString(cursor.getColumnIndexOrThrow("nombre"))
+            )
         } else {
             null
         }
-
-        cursor.close()
-
-        return categoria
     }
 
-
-    fun getAllCategorias(): List<Categoria> {
-        val db = dbHelper.readableDatabase
-
-        val cursor = db.query(
-            "Categorias",
-            arrayOf("categoria_id", "nombre"),
-            null,
-            null,
-            null,
-            null,
-            null
-        )
-
-        val categorias = mutableListOf<Categoria>()
-
-        with(cursor) {
-            while (moveToNext()) {
-                val categoriaId = getInt(getColumnIndexOrThrow("categoria_id"))
-                val nombreCategoria = getString(getColumnIndexOrThrow("nombre"))
-
-                categorias.add(Categoria(categoriaId, nombreCategoria))
-            }
-        }
-        cursor.close()
-
-        return categorias
+    fun getAllCategorias(): List<Categoria> = dbHelper.readableDatabase.query(
+        "Categorias", arrayOf("categoria_id", "nombre"),
+        null, null, null, null, null
+    ).use { cursor ->
+        generateSequence { if (cursor.moveToNext()) cursor else null }
+            .map {
+                Categoria(
+                    it.getInt(it.getColumnIndexOrThrow("categoria_id")),
+                    it.getString(it.getColumnIndexOrThrow("nombre"))
+                )
+            }.toList()
     }
 
-    fun deleteCategoria(categoriaId: Int): Int {
-        val db = dbHelper.writableDatabase
+    fun deleteCategoria(categoriaId: Int): Int = dbHelper.writableDatabase.delete(
+        "Categorias", "categoria_id = ?", arrayOf(categoriaId.toString())
+    )
 
-        return db.delete("Categorias", "categoria_id = ?", arrayOf(categoriaId.toString()))
-    }
-
-    // ---------------------------------------------------------------------------------------------
     // Métodos para la tabla Transacciones
 
     fun insertTransaccion(transaccion: Transaccion): Long {
@@ -205,10 +130,8 @@ class FinanzasRepository(context: Context) {
         val transaccionId = db.insert("Transacciones", null, values)
 
         if (transaccionId != -1L) {
-            val cuenta = getCuenta(transaccion.cuentaId)
-            if (cuenta != null) {
-                val nuevoSaldo = calcularNuevoSaldo(cuenta, transaccion)
-                cuenta.saldo = nuevoSaldo
+            getCuenta(transaccion.cuentaId)?.let { cuenta ->
+                cuenta.saldo = calcularNuevoSaldo(cuenta.saldo, transaccion.importe, transaccion.tipo)
                 actualizarCuenta(cuenta)
             }
         }
@@ -217,6 +140,9 @@ class FinanzasRepository(context: Context) {
 
     fun actualizarTransaccion(transaccion: Transaccion) {
         val db = dbHelper.writableDatabase
+
+        // Obtener la información de la transacción antes de la actualización
+        val transaccionAntigua = getTransaccion(transaccion.transaccionId)
 
         val values = ContentValues().apply {
             put("nombre", transaccion.nombre)
@@ -233,73 +159,86 @@ class FinanzasRepository(context: Context) {
 
         // Actualizar el saldo de la cuenta asociada
         val cuenta = getCuenta(transaccion.cuentaId)
-        if (cuenta != null) {
-            val nuevoSaldo = calcularNuevoSaldo(cuenta, transaccion)
-            cuenta.saldo = nuevoSaldo
+        if (cuenta != null && transaccionAntigua != null) {
+
+            // Revertir la transacción anterior antes de aplicar la nueva
+            cuenta.saldo = calcularNuevoSaldo(cuenta.saldo, -transaccionAntigua.importe, transaccionAntigua.tipo)
+
+            // Aplicar la nueva transacción
+            cuenta.saldo = calcularNuevoSaldo(cuenta.saldo, transaccion.importe, transaccion.tipo)
+
+            // Actualizar el saldo en la cuenta
             actualizarCuenta(cuenta)
         }
     }
 
-    // Función para calcular el nuevo saldo de la cuenta al insertar o actualizar una transacción
-    private fun calcularNuevoSaldo(cuenta: CuentaFinanciera, transaccion: Transaccion): Double {
-        return if (transaccion.tipo == TipoTransaccion.INGRESO) {
-            cuenta.saldo + transaccion.importe
+    fun getTransaccion(transaccionId: Int): Transaccion? = dbHelper.readableDatabase.query(
+        "Transacciones",
+        arrayOf(
+            "transaccion_id", "nombre", "cuenta_id", "categoria_id", "fecha",
+            "tipo", "importe", "nota", "valoracion"
+        ),
+        "transaccion_id = ?", arrayOf(transaccionId.toString()),
+        null, null, null
+    ).use { cursor ->
+        if (cursor.moveToFirst()) {
+            Transaccion(
+                cursor.getInt(cursor.getColumnIndexOrThrow("transaccion_id")),
+                cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
+                cursor.getInt(cursor.getColumnIndexOrThrow("cuenta_id")),
+                cursor.getInt(cursor.getColumnIndexOrThrow("categoria_id")),
+                cursor.getLong(cursor.getColumnIndexOrThrow("fecha")),
+                TipoTransaccion.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("tipo"))),
+                cursor.getDouble(cursor.getColumnIndexOrThrow("importe")),
+                cursor.getString(cursor.getColumnIndexOrThrow("nota")),
+                cursor.getInt(cursor.getColumnIndexOrThrow("valoracion"))
+            )
         } else {
-            cuenta.saldo - transaccion.importe
+            null
         }
     }
 
-
-    fun getAllTransacciones(): List<Transaccion> {
-        val db = dbHelper.readableDatabase
-
-        val cursor = db.query(
-            "Transacciones",
-            arrayOf("transaccion_id", "nombre", "cuenta_id", "categoria_id", "fecha", "tipo", "importe", "nota", "valoracion"),
-            null,
-            null,
-            null,
-            null,
-            null
-        )
-
-        val transacciones = mutableListOf<Transaccion>()
-
-        with(cursor) {
-            while (moveToNext()) {
-                val transaccionId = getInt(getColumnIndexOrThrow("transaccion_id"))
-                val nombre = getString(getColumnIndexOrThrow("nombre"))
-                val cuentaId = getInt(getColumnIndexOrThrow("cuenta_id"))
-                val categoriaId = getInt(getColumnIndexOrThrow("categoria_id"))
-                val fecha = getLong(getColumnIndexOrThrow("fecha"))
-                val tipo = TipoTransaccion.valueOf(getString(getColumnIndexOrThrow("tipo")))
-                val importe = getDouble(getColumnIndexOrThrow("importe"))
-                val nota = getString(getColumnIndexOrThrow("nota"))
-                val valoracion = getInt(getColumnIndexOrThrow("valoracion"))
-
-                transacciones.add(
-                    Transaccion(
-                        transaccionId,
-                        nombre,
-                        cuentaId,
-                        categoriaId,
-                        fecha,
-                        tipo,
-                        importe,
-                        nota,
-                        valoracion
-                    )
+    fun getAllTransacciones(): List<Transaccion> = dbHelper.readableDatabase.query(
+        "Transacciones",
+        arrayOf(
+            "transaccion_id", "nombre", "cuenta_id", "categoria_id", "fecha",
+            "tipo", "importe", "nota", "valoracion"
+        ),
+        null, null, null, null, null
+    ).use { cursor ->
+        generateSequence { if (cursor.moveToNext()) cursor else null }
+            .map {
+                Transaccion(
+                    it.getInt(it.getColumnIndexOrThrow("transaccion_id")),
+                    it.getString(it.getColumnIndexOrThrow("nombre")),
+                    it.getInt(it.getColumnIndexOrThrow("cuenta_id")),
+                    it.getInt(it.getColumnIndexOrThrow("categoria_id")),
+                    it.getLong(it.getColumnIndexOrThrow("fecha")),
+                    TipoTransaccion.valueOf(it.getString(it.getColumnIndexOrThrow("tipo"))),
+                    it.getDouble(it.getColumnIndexOrThrow("importe")),
+                    it.getString(it.getColumnIndexOrThrow("nota")),
+                    it.getInt(it.getColumnIndexOrThrow("valoracion"))
                 )
-            }
-        }
-        cursor.close()
-
-        return transacciones
+            }.toList()
     }
 
     fun deleteTransaccion(transaccionId: Int): Int {
-        val db = dbHelper.writableDatabase
+        // Obtener la información de la transacción antes de borrarla
+        val transaccion = getTransaccion(transaccionId)
 
-        return db.delete("Transacciones", "transaccion_id = ?", arrayOf(transaccionId.toString()))
+        // Borrar la transacción
+        val deletedRows = dbHelper.writableDatabase.delete(
+            "Transacciones", "transaccion_id = ?", arrayOf(transaccionId.toString())
+        )
+
+        // Restar el importe al saldo de la cuenta asociada
+        if (deletedRows > 0 && transaccion != null) {
+            getCuenta(transaccion.cuentaId)?.let { cuenta ->
+                cuenta.saldo = calcularNuevoSaldo(cuenta.saldo, -transaccion.importe, transaccion.tipo)
+                actualizarCuenta(cuenta)
+            }
+        }
+
+        return deletedRows
     }
 }

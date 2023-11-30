@@ -55,12 +55,4 @@
         android:textColor="#FFFFFF"
         android:layout_margin="10dp" />
 
-    <TextView
-        android:id="@+id/tvMensaje"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:text=""
-        android:textColor="@android:color/holo_green_dark"
-        android:textStyle="bold" />
 </LinearLayout>

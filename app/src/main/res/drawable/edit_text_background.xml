@@ -2,7 +2,7 @@
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Fondo del EditText -->
-    <solid android:color="#BbCcFf" />
+    <solid android:color="#daeeFf" />
 
     <!-- Borde del EditText -->
     <stroke
@@ -14,5 +14,6 @@
 
     <!-- Padding interno de 16dp -->
     <padding
-        android:left="16dp" />
+        android:left="16dp"
+        android:right="16dp"/>
 </shape>
