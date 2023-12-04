@@ -17,11 +17,11 @@
     <string name="nombre_de_la_cuenta">Nombre de la cuenta o el activo</string>
     <string name="saldo_inicial">Saldo Inicial</string>
 
-    <string name="guardar">Guardar</string>
-    <string name="volver">Volver</string>
+    <string name="guardar">💾</string>
+    <string name="volver">❌</string>
+    <string name="borrar_cuenta">🗑️</string>
 
     <string name="ingrese_un_nombre">Ingrese un nombre</string>
-    <string name="borrar_cuenta">Borrar</string>
     <string name="guardando_cuenta">Guardando</string>
     <string name="modificar_cuenta">Modificar %1$s</string>
 
@@ -31,7 +31,7 @@
     <string name="si">Sí</string>
     <string name="no">No</string>
     <string name="title_activity_new_transaccion">NewTransaccion</string>
-    <!-- Strings used for fragments for navigation -->
+
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
