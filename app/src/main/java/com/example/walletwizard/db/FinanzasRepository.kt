@@ -9,13 +9,39 @@ class FinanzasRepository(context: Context) {
 
     // Métodos para la tabla CuentasFinancieras
 
-    fun insertCuenta(cuenta: CuentaFinanciera): Long = dbHelper.writableDatabase.insert(
-        "CuentasFinancieras", null,
-        ContentValues().apply {
-            put("nombre_cuenta", cuenta.nombreCuenta)
-            put("saldo", cuenta.saldo)
+    fun insertCuenta(cuenta: CuentaFinanciera): Long {
+        val db = dbHelper.writableDatabase
+
+        // Insertar la cuenta con saldo 0
+        val cuentaId = db.insert(
+            "CuentasFinancieras", null,
+            ContentValues().apply {
+                put("nombre_cuenta", cuenta.nombreCuenta)
+                put("saldo", 0.0)
+            }
+        )
+
+        val saldo = cuenta.saldo
+        if (cuentaId != -1L && saldo != 0.0) {
+            // Insertar la transacción asociada a la cuenta con el salario
+            insertTransaccion(
+                Transaccion(
+                    0,
+                    "Existencias",
+                    cuentaId.toInt(),
+                    4, // Ajusta esto según tu lógica
+                    System.currentTimeMillis(), // Fecha actual
+                    TipoTransaccion.INGRESO, // Se asume que es un ingreso
+                    saldo,
+                    "Dinero existente en la cuenta al insertarla en nuestra aplicación",
+                    0 // Sin valoración
+                )
+            )
         }
-    )
+
+        return cuentaId
+    }
+
 
     fun actualizarCuenta(cuenta: CuentaFinanciera) {
         dbHelper.writableDatabase.update(
@@ -204,7 +230,7 @@ class FinanzasRepository(context: Context) {
             "transaccion_id", "nombre", "cuenta_id", "categoria_id", "fecha",
             "tipo", "importe", "nota", "valoracion"
         ),
-        null, null, null, null, null
+        null, null, null, null, "fecha desc"
     ).use { cursor ->
         generateSequence { if (cursor.moveToNext()) cursor else null }
             .map {

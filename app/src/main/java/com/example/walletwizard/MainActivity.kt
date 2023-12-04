@@ -1,10 +1,13 @@
 package com.example.walletwizard
 
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
 import com.example.walletwizard.databinding.ActivityMainBinding
+import com.example.walletwizard.db.DataGenerator
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,8 +20,6 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
-        //DataGenerator.insertDummyData(this, true)
-
         // Configurar el listener para cerrar el cajón de navegación al seleccionar un ítem y cambiar de fragment si corresponde
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
@@ -28,6 +29,9 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.menu_inicio -> navController.navigate(R.id.nav_inicio)
                 R.id.menu_transac -> navController.navigate(R.id.nav_transac)
+                R.id.menu_datos -> {
+                    mostrarDialogo()
+                }
             }
             true
         }
@@ -48,14 +52,35 @@ class MainActivity : AppCompatActivity() {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
     }
-}
 
-/* código para controlar con un toolbar
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration( setOf( R.id.nav_inicio), binding.drawerLayout
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.navView.setupWithNavController(navController)
-        */
+    private fun mostrarDialogo() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.datos_prueba)
+        builder.setMessage("¿Desea insertar datos ficticios o borrar todos los datos almacenados?")
+
+        builder.setPositiveButton("Insertar") { _, _ ->
+            // Lógica para insertar datos ficticios
+            DataGenerator.insertDummyData(this, true)
+            recreate()
+            mostrarMensaje("Insertar datos ficticios")
+        }
+
+        builder.setNegativeButton("Borrar") { _, _ ->
+            // Lógica para borrar todos los datos
+            DataGenerator.delete(this)
+            recreate()
+            mostrarMensaje("Borrar todos los datos")
+        }
+
+        builder.setNeutralButton("Volver") { _, _ ->
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+    private fun mostrarMensaje(mensaje: String) {
+        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
+    }
+
+}

@@ -15,6 +15,7 @@
         android:autofillHints="username"
         android:hint="@string/nombre_de_la_transaccion"
         android:inputType="text"
+        android:maxLength="30"
         android:maxWidth="300dp"
         android:layout_margin="4dp"/>
 

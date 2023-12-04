@@ -13,6 +13,10 @@
             android:id="@+id/menu_transac"
             android:icon="@drawable/list_24"
             android:title="@string/transacciones" />
+        <item
+            android:id="@+id/menu_datos"
+            android:icon="@drawable/add_24"
+            android:title="@string/datos_prueba" />
     </group>
 
 </menu>
