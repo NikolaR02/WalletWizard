@@ -45,4 +45,5 @@
     <string name="importe">Importe</string>
     <string name="nota">Nota</string>
     <string name="confirmacion_borrar_transaccion_mensaje">Esta acción eliminará permanentemente la transferencia. ¿Deseas continuar?</string>
+    <string name="datos_prueba">Datos de Prueba</string>
 </resources>

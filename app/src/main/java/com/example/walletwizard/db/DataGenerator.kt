@@ -9,18 +9,8 @@ object DataGenerator {
         val finanzasRepository = FinanzasRepository(context)
 
         if (deleteExistingData) {
-            // Borrar datos existentes utilizando los métodos específicos
-            finanzasRepository.getAllCuentas().forEach { cuenta ->
-                finanzasRepository.deleteCuenta(cuenta.cuentaId)
-            }
-
-            finanzasRepository.getAllCategorias().forEach { categoria ->
-                finanzasRepository.deleteCategoria(categoria.categoriaId)
-            }
-
-            finanzasRepository.getAllTransacciones().forEach { transaccion ->
-                finanzasRepository.deleteTransaccion(transaccion.transaccionId)
-            }
+            // Borrar datos existentes
+            delete(context)
         }
 
         // Insertar categorías ficticias
@@ -48,6 +38,22 @@ object DataGenerator {
 
             val transaccion = Transaccion(0, nombre, cuentaId, categoriaId, fecha, tipo, importe, nota, valoracion)
             finanzasRepository.insertTransaccion(transaccion)
+        }
+    }
+
+    fun delete(context: Context) {
+        val finanzasRepository = FinanzasRepository(context)
+
+        finanzasRepository.getAllCuentas().forEach { cuenta ->
+            finanzasRepository.deleteCuenta(cuenta.cuentaId)
+        }
+
+        finanzasRepository.getAllCategorias().forEach { categoria ->
+            finanzasRepository.deleteCategoria(categoria.categoriaId)
+        }
+
+        finanzasRepository.getAllTransacciones().forEach { transaccion ->
+            finanzasRepository.deleteTransaccion(transaccion.transaccionId)
         }
     }
 }
