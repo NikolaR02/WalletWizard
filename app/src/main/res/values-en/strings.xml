@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">WalletWizard</string>
+
+    <string name="saldo_total">Total Balance\n%1$.2f€</string>
+
+    <string name="todos">All</string>
+    <string name="ingresos">Income</string>
+    <string name="gastos">Expenses</string>
+    <string name="euros">%1$.2f€</string>
+    <string name="neuros">-%1$.2f€</string>
+    <string name="nuevo">New</string>
+
+    <string name="inicio">Home</string>
+    <string name="transacciones">Transactions</string>
+    <string name="abre_men">Open Menu</string>
+
+    <string name="nombre_de_la_cuenta">Account or Asset Name</string>
+    <string name="saldo_inicial">Initial Balance</string>
+
+    <string name="guardar">💾</string>
+    <string name="volver">❌</string>
+    <string name="borrar_cuenta">🗑️</string>
+
+    <string name="ingrese_un_nombre">Enter a Name</string>
+    <string name="guardando_cuenta">Saving</string>
+    <string name="modificar_cuenta">Modify %1$s</string>
+
+    <string name="introduce_un_nombre_descriptivo_y_el_saldo_actual_si_tiene">Enter a descriptive name and the current balance if any</string>
+    <string name="confirmacion_borrar">Are you sure?</string>
+    <string name="confirmacion_borrar_cuenta_mensaje">This action will permanently delete the account and associated transfers. Do you want to continue?</string>
+    <string name="si">Yes</string>
+    <string name="no">No</string>
+    <string name="title_activity_new_transaccion">NewTransaction</string>
+
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="nombre_de_la_transaccion">Transaction Name</string>
+    <string name="seleccionar_cuenta">Select an Account</string>
+    <string name="seleccionar_categoria">Select a Category</string>
+    <string name="seleccionar_fecha">Select Date</string>
+    <string name="tipo">Income (deactivate if it\'s an expense)</string>
+    <string name="importe">Amount</string>
+    <string name="nota">Note</string>
+    <string name="confirmacion_borrar_transaccion_mensaje">This action will permanently delete the transfer. Do you want to continue?</string>
+</resources>
