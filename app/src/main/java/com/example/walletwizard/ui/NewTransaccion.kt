@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -12,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.walletwizard.MainActivity
 import com.example.walletwizard.R
 import com.example.walletwizard.databinding.ActivityNewTransaccionBinding
+import com.example.walletwizard.db.Categoria
+import com.example.walletwizard.db.CuentaFinanciera
 import com.example.walletwizard.db.FinanzasRepository
 import com.example.walletwizard.db.TipoTransaccion
 import com.example.walletwizard.db.Transaccion
@@ -24,6 +25,9 @@ class NewTransaccion : AppCompatActivity() {
     private lateinit var binding: ActivityNewTransaccionBinding
     private var transaccionId: Int = -1
     private var selectedDateInMillis: Long = 0
+    private lateinit var cuentas: List<CuentaFinanciera>
+    private lateinit var categorias: List<Categoria>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,11 +50,11 @@ class NewTransaccion : AppCompatActivity() {
     private fun setupSpinners() {
         val repository = FinanzasRepository(this)
 
-        val cuentas = repository.getAllCuentas()
+        cuentas = repository.getAllCuentas()
         val cuentasAdapter = createSpinnerAdapter(cuentas.map { it.nombreCuenta })
         binding.spinnerCuenta.adapter = cuentasAdapter
 
-        val categorias = repository.getAllCategorias()
+        categorias = repository.getAllCategorias()
         val categoriasAdapter = createSpinnerAdapter(categorias.map { it.nombre })
         binding.spinnerCategoria.adapter = categoriasAdapter
     }
@@ -63,19 +67,14 @@ class NewTransaccion : AppCompatActivity() {
 
     private fun cargarDatosTransaccion() {
         binding.etNombreTransaccion.setText(intent.getStringExtra("nombre"))
-        binding.spinnerCuenta.setSelection(obtenerPosicion(binding.spinnerCuenta, intent.getIntExtra("cuenta_id", -1)))
-        binding.spinnerCategoria.setSelection(obtenerPosicion(binding.spinnerCategoria, intent.getIntExtra("categoria_id", -1)))
+        binding.spinnerCuenta.setSelection(cuentas.indexOf(FinanzasRepository(this).getCuenta(intent.getIntExtra("cuenta_id", -1))))
+        binding.spinnerCategoria.setSelection(intent.getIntExtra("categoria_id", 0)-1)
         selectedDateInMillis = intent.getLongExtra("fecha", 0)
         binding.btnFechaPicker.text = formatDate(selectedDateInMillis)
         binding.switchTipo.isChecked = intent.getSerializableExtra("tipo") == TipoTransaccion.INGRESO
         binding.etImporte.setText(intent.getDoubleExtra("importe", 0.0).toString())
         binding.etNota.setText(intent.getStringExtra("nota"))
         binding.ratingBar.rating = intent.getIntExtra("valoracion", 0).toFloat()
-    }
-
-    private fun obtenerPosicion(spinner: AdapterView<*>, itemId: Int): Int {
-        val adapter = spinner.adapter as ArrayAdapter<Int>
-        return adapter.getPosition(itemId)
     }
 
     private fun mostrarDialogoConfirmacionBorrarTransaccion() {
@@ -129,16 +128,17 @@ class NewTransaccion : AppCompatActivity() {
 
     private fun guardarTransaccion() {
         val nombre = binding.etNombreTransaccion.text.toString()
-        val cuentaId = binding.spinnerCuenta.selectedItem // Adjust accordingly
-        val categoriaId = binding.spinnerCategoria.selectedItem // Adjust accordingly
+        val cuentaId = cuentas[(binding.spinnerCuenta.selectedItemId).toInt()].cuentaId
+        val categoriaId = categorias[(binding.spinnerCategoria.selectedItemId).toInt()].categoriaId
         val fecha = selectedDateInMillis
         val tipo = if (binding.switchTipo.isChecked) TipoTransaccion.INGRESO else TipoTransaccion.GASTO
         val importe = binding.etImporte.text.toString().toDoubleOrNull()
         val nota = binding.etNota.text.toString()
         val valoracion = binding.ratingBar.rating.toInt()
 
-        if (nombre.isNotEmpty() && cuentaId != null && categoriaId != null && importe != null) {
-            val transaccion = Transaccion(transaccionId, nombre, cuentaId as Int, categoriaId as Int, fecha, tipo, importe, nota, valoracion)
+        if (nombre.isNotEmpty() && importe != null) {
+            val transaccion = Transaccion(transaccionId, nombre,
+                cuentaId, categoriaId, fecha, tipo, importe, nota, valoracion)
 
             if (transaccionId == -1) {
                 FinanzasRepository(this).insertTransaccion(transaccion)

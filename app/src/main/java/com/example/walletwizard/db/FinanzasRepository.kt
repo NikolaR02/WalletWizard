@@ -183,18 +183,26 @@ class FinanzasRepository(context: Context) {
 
         db.update("Transacciones", values, "transaccion_id = ?", arrayOf(transaccion.transaccionId.toString()))
 
+
         // Actualizar el saldo de la cuenta asociada
-        val cuenta = getCuenta(transaccion.cuentaId)
-        if (cuenta != null && transaccionAntigua != null) {
+        if (transaccionAntigua != null) {
+            val cuentaNueva = getCuenta(transaccion.cuentaId)!!
+            val cuentaAntigua = getCuenta(transaccionAntigua.cuentaId)!!
 
             // Revertir la transacción anterior antes de aplicar la nueva
-            cuenta.saldo = calcularNuevoSaldo(cuenta.saldo, -transaccionAntigua.importe, transaccionAntigua.tipo)
-
-            // Aplicar la nueva transacción
-            cuenta.saldo = calcularNuevoSaldo(cuenta.saldo, transaccion.importe, transaccion.tipo)
-
+            cuentaAntigua.saldo = calcularNuevoSaldo(cuentaAntigua.saldo, -transaccionAntigua.importe, transaccionAntigua.tipo)
             // Actualizar el saldo en la cuenta
-            actualizarCuenta(cuenta)
+            if (transaccion.cuentaId != transaccionAntigua.cuentaId) {
+                actualizarCuenta(cuentaAntigua)
+
+                // Aplicar la nueva transacción
+                cuentaNueva.saldo = calcularNuevoSaldo(cuentaNueva.saldo, transaccion.importe, transaccion.tipo)
+                // Actualizar el saldo en la cuenta
+                actualizarCuenta(cuentaNueva)
+            } else {
+                cuentaAntigua.saldo = calcularNuevoSaldo(cuentaAntigua.saldo, transaccion.importe, transaccion.tipo)
+                actualizarCuenta(cuentaAntigua)
+            }
         }
     }
 
