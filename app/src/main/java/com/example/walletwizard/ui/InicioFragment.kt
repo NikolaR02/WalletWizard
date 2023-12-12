@@ -64,7 +64,7 @@ class InicioFragment : Fragment() {
         val listaSaldos = mutableListOf<String>()
 
         for (cuenta in cuentas) {
-            val saldoFormateado = "${cuenta.nombreCuenta} \n Saldo: ${getString(R.string.euros, cuenta.saldo)}"
+            val saldoFormateado = "${cuenta.nombreCuenta} \n ${getString(R.string.saldo)}: ${getString(R.string.euros, cuenta.saldo)}"
             listaSaldos.add(saldoFormateado)
             totalSaldos += cuenta.saldo
         }

@@ -27,7 +27,7 @@ object DataGenerator {
         // Insertar cuentas financieras ficticias
         cuentas = listOf("Cuenta Bancaria A", "Cuenta Bancaria B", "Efectivo")
         for (nombreCuenta in cuentas) {
-            println(nombreCuenta + ": " + finanzasRepository.insertCuenta(CuentaFinanciera(0, nombreCuenta, 0.0)))
+            println(nombreCuenta + ": " + finanzasRepository.insertCuenta(CuentaFinanciera(0, nombreCuenta, 0.0),context))
         }
 
         //insertarDatosBucle(context, 30)

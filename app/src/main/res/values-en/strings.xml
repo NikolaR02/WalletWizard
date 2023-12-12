@@ -17,9 +17,6 @@
     <string name="nombre_de_la_cuenta">Account or Asset Name</string>
     <string name="saldo_inicial">Initial Balance</string>
 
-    <string name="guardar">💾</string>
-    <string name="volver">❌</string>
-    <string name="borrar_cuenta">🗑️</string>
 
     <string name="ingrese_un_nombre">Enter a Name</string>
     <string name="guardando_cuenta">Saving</string>
@@ -46,4 +43,11 @@
     <string name="nota">Note</string>
     <string name="confirmacion_borrar_transaccion_mensaje">This action will permanently delete the transfer. Do you want to continue?</string>
     <string name="datos_prueba">Test Data</string>
+    <string name="datos_prueba_texto">Do you want to insert fictitious data or delete all stored data?</string>
+    <string name="insertar_toast">Inserting fictitious data</string>
+    <string name="borrar_toast">Delete all data</string>
+    <string name="saldo">Balance</string>
+    <string name="existencias">Money on hand before recording</string>
+    <string name="nota_existencias">Money existing in the account upon insertion into the application</string>
+    <string name="sin_cuentas">Insert an financial funds</string>
 </resources>

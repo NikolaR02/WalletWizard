@@ -17,9 +17,10 @@
     <string name="nombre_de_la_cuenta">Nombre de la cuenta o el activo</string>
     <string name="saldo_inicial">Saldo Inicial</string>
 
-    <string name="guardar">💾</string>
-    <string name="volver">❌</string>
-    <string name="borrar_cuenta">🗑️</string>
+    <string name="guardar" translatable="false">💾</string>
+    <string name="volver" translatable="false">❌</string>
+    <string name="borrar_cuenta" translatable="false">🗑️</string>
+    <string name="insertar" translatable="false">📥</string>
 
     <string name="ingrese_un_nombre">Ingrese un nombre</string>
     <string name="guardando_cuenta">Guardando</string>
@@ -46,4 +47,11 @@
     <string name="nota">Nota</string>
     <string name="confirmacion_borrar_transaccion_mensaje">Esta acción eliminará permanentemente la transferencia. ¿Deseas continuar?</string>
     <string name="datos_prueba">Datos de Prueba</string>
+    <string name="datos_prueba_texto">¿Desea insertar datos ficticios o borrar todos los datos almacenados?</string>
+    <string name="insertar_toast">Insertando datos ficticios</string>
+    <string name="borrar_toast">Borrar todos los datos</string>
+    <string name="saldo">Saldo</string>
+    <string name="existencias">Existencias</string>
+    <string name="nota_existencias">Dinero existente en la cuenta al insertarla en la aplicación</string>
+    <string name="sin_cuentas">Inserta una cuenta financiera</string>
 </resources>

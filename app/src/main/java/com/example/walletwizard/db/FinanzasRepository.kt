@@ -2,6 +2,7 @@ package com.example.walletwizard.db
 
 import android.content.ContentValues
 import android.content.Context
+import com.example.walletwizard.R
 
 class FinanzasRepository(context: Context) {
 
@@ -9,7 +10,7 @@ class FinanzasRepository(context: Context) {
 
     // Métodos para la tabla CuentasFinancieras
 
-    fun insertCuenta(cuenta: CuentaFinanciera): Long {
+    fun insertCuenta(cuenta: CuentaFinanciera, context: Context): Long {
         val db = dbHelper.writableDatabase
 
         // Insertar la cuenta con saldo 0
@@ -23,18 +24,18 @@ class FinanzasRepository(context: Context) {
 
         val saldo = cuenta.saldo
         if (cuentaId != -1L && saldo != 0.0) {
-            // Insertar la transacción asociada a la cuenta con el salario
+            // Insertar la transacción asociada a la cuenta
             insertTransaccion(
                 Transaccion(
                     0,
-                    "Existencias",
+                    context.getString(R.string.existencias),
                     cuentaId.toInt(),
-                    4, // Ajusta esto según tu lógica
-                    System.currentTimeMillis(), // Fecha actual
-                    TipoTransaccion.INGRESO, // Se asume que es un ingreso
+                    5,
+                    System.currentTimeMillis(),
+                    TipoTransaccion.INGRESO,
                     saldo,
-                    "Dinero existente en la cuenta al insertarla en nuestra aplicación",
-                    0 // Sin valoración
+                    context.getString(R.string.nota_existencias),
+                    0
                 )
             )
         }

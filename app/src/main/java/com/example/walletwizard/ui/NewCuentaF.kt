@@ -85,7 +85,7 @@ class NewCuentaF : AppCompatActivity() {
             }
 
             if (nuevo) {
-                finanzasRepository.insertCuenta(cuenta)
+                finanzasRepository.insertCuenta(cuenta,this)
             } else {
                 finanzasRepository.actualizarCuenta(cuenta)
             }

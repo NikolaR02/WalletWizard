@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.walletwizard.LvTransacAdapter
 import com.example.walletwizard.R
@@ -33,8 +34,12 @@ class TransacFragment : Fragment() {
         cambiarTipo(Tipo.TODOS)
 
         binding.fabNueva.setOnClickListener {
-            val intent = Intent(requireContext(), NewTransaccion::class.java)
-            startActivity(intent)
+            if (FinanzasRepository(requireContext()).getAllCuentas().isEmpty()) {
+
+                Toast.makeText(requireContext(), getString(R.string.sin_cuentas), Toast.LENGTH_LONG).show()
+            } else {
+                startActivity(Intent(requireContext(), NewTransaccion::class.java))
+            }
         }
 
         binding.lvTransac.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->

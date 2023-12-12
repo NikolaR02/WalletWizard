@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
             toggleDrawer()
         }
 
-
     }
 
     // abrir el menú
@@ -56,23 +55,23 @@ class MainActivity : AppCompatActivity() {
     private fun mostrarDialogo() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.datos_prueba)
-        builder.setMessage("¿Desea insertar datos ficticios o borrar todos los datos almacenados?")
+        builder.setMessage(R.string.datos_prueba_texto)
 
-        builder.setPositiveButton("Insertar") { _, _ ->
+        builder.setPositiveButton(R.string.insertar) { _, _ ->
             // Lógica para insertar datos ficticios
             DataGenerator.insertDummyData(this, true)
             recreate()
-            mostrarMensaje("Insertar datos ficticios")
+            mostrarMensaje(getString(R.string.insertar_toast))
         }
 
-        builder.setNegativeButton("Borrar") { _, _ ->
+        builder.setNegativeButton(R.string.borrar_cuenta) { _, _ ->
             // Lógica para borrar todos los datos
             DataGenerator.delete(this)
             recreate()
-            mostrarMensaje("Borrar todos los datos")
+            mostrarMensaje(getString(R.string.borrar_toast))
         }
 
-        builder.setNeutralButton("Volver") { _, _ ->
+        builder.setNeutralButton(R.string.volver) { _, _ ->
         }
 
         val dialog: AlertDialog = builder.create()
