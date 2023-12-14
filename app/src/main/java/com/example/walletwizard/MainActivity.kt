@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
             toggleDrawer()
         }
 
+        DataGenerator.insertCategoriasUnaVez(this)
     }
 
     // abrir el menú

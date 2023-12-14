@@ -1,6 +1,8 @@
 package com.example.walletwizard.db
 
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.core.content.edit
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -9,29 +11,41 @@ object DataGenerator {
 
     private lateinit var cuentas: List<String>
     private lateinit var categorias: List<String>
+    private const val PREFS_NAME = "MyPrefs"
+    private const val KEY_DUMMY_DATA_INSERTED = "dummyDataInserted"
 
     fun insertDummyData(context: Context, deleteExistingData: Boolean) {
-        val finanzasRepository = FinanzasRepository(context)
-
         if (deleteExistingData) {
             // Borrar datos existentes
             delete(context)
         }
 
-        // Insertar categorías
-        categorias = listOf("Alimentación", "Entretenimiento", "Transporte", "Salud", "Otros")
-        for (nombreCategoria in categorias) {
-            println(nombreCategoria + ": " + finanzasRepository.insertCategoria(Categoria(0, nombreCategoria)))
-        }
-
         // Insertar cuentas financieras ficticias
         cuentas = listOf("Cuenta Bancaria A", "Cuenta Bancaria B", "Efectivo")
         for (nombreCuenta in cuentas) {
-            println(nombreCuenta + ": " + finanzasRepository.insertCuenta(CuentaFinanciera(0, nombreCuenta, 0.0),context))
+            println(nombreCuenta + ": " + FinanzasRepository(context).insertCuenta(CuentaFinanciera(0, nombreCuenta, 0.0),context))
         }
 
         //insertarDatosBucle(context, 30)
         insertarDatosSignificativos(context)
+    }
+
+    fun insertCategoriasUnaVez(context: Context) {
+        val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+        // Insertar transacciones ficticias solo si no se han insertado antes
+        if (!prefs.getBoolean(KEY_DUMMY_DATA_INSERTED, false)) {
+            //si se usa bdd modificada por una versión de la app en la que no estaba el método
+            FinanzasRepository(context).getAllCategorias().forEach { categoria ->
+                FinanzasRepository(context).deleteCategoria(categoria.categoriaId)
+            }
+
+            categorias = listOf("Alimentación", "Entretenimiento", "Transporte", "Salud", "Otros")
+            for (nombreCategoria in categorias) {
+                println(nombreCategoria + ": " + FinanzasRepository(context).insertCategoria(Categoria(0, nombreCategoria)))
+            }
+            prefs.edit { putBoolean(KEY_DUMMY_DATA_INSERTED, true)}
+        }
     }
 
     fun insertarDatosBucle(context: Context, numeroTransacciones: Int) {
@@ -129,16 +143,11 @@ object DataGenerator {
         return (ahora - (0..tresAniosEnMillis).random()).coerceAtLeast(0)
     }
 
-
     fun delete(context: Context) {
         val finanzasRepository = FinanzasRepository(context)
 
         finanzasRepository.getAllCuentas().forEach { cuenta ->
             finanzasRepository.deleteCuenta(cuenta.cuentaId)
-        }
-
-        finanzasRepository.getAllCategorias().forEach { categoria ->
-            finanzasRepository.deleteCategoria(categoria.categoriaId)
         }
 
         finanzasRepository.getAllTransacciones().forEach { transaccion ->
